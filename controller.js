@@ -1,4 +1,4 @@
-const { displayCategories } = require("./model");
+const { displayCategories, displayReviews } = require("./model");
 
 const getCategories = (request, response) => {
   displayCategories()
@@ -11,4 +11,11 @@ const getCategories = (request, response) => {
     });
 };
 
-module.exports = { getCategories };
+const getReviews = (request, response) => {
+  displayReviews().then((reviews) => {
+    const reviewData = reviews.rows;
+    response.status(200).send(reviewData);
+  });
+};
+
+module.exports = { getCategories, getReviews };
