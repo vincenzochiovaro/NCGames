@@ -16,3 +16,9 @@ const displayReviews = () => {
 };
 
 module.exports = { displayCategories, displayReviews };
+const displayReviewId = (reviewId) => {
+  return db.query(`SELECT * FROM reviews
+                   WHERE review_id = ${reviewId}`);
+};
+
+module.exports = { displayCategories, displayReviewId };
