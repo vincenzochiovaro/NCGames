@@ -22,7 +22,6 @@ const getReviews = (request, response) => {
   });
 };
 
-module.exports = { getCategories, getReviews };
 const getReviewsById = (request, response) => {
   const { review_id } = request.params;
   displayReviewId(review_id).then((reviewById) => {
@@ -30,4 +29,4 @@ const getReviewsById = (request, response) => {
     response.status(200).send(reviewByIdToSend);
   });
 };
-module.exports = { getCategories, getReviewsById };
+module.exports = { getCategories, getReviewsById, getReviews };

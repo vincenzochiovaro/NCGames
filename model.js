@@ -15,10 +15,12 @@ const displayReviews = () => {
   `);
 };
 
-module.exports = { displayCategories, displayReviews };
 const displayReviewId = (reviewId) => {
-  return db.query(`SELECT * FROM reviews
-                   WHERE review_id = ${reviewId}`);
+  return db.query(
+    `SELECT * FROM reviews
+     WHERE review_id = $1;`,
+    [reviewId]
+  );
 };
 
-module.exports = { displayCategories, displayReviewId };
+module.exports = { displayCategories, displayReviewId, displayReviews };
