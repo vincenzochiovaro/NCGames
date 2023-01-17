@@ -1,4 +1,5 @@
-const { displayCategories } = require("./model");
+const { end } = require("./db/connection");
+const { displayCategories, displayReviewId } = require("./model");
 
 const getCategories = (request, response) => {
   displayCategories()
@@ -11,4 +12,11 @@ const getCategories = (request, response) => {
     });
 };
 
-module.exports = { getCategories };
+const getReviewsById = (request, response) => {
+  const { review_id } = request.params;
+  displayReviewId(review_id).then((reviewById) => {
+    const reviewByIdToSend = reviewById.rows;
+    response.status(200).send(reviewByIdToSend);
+  });
+};
+module.exports = { getCategories, getReviewsById };
