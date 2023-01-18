@@ -34,9 +34,21 @@ const displayCommentByReviewId = (reviewId) => {
   );
 };
 
+const insertComment = (reviewId, { username, body }) => {
+  return db
+    .query(
+      `INSERT INTO comments (review_id,author,body) VALUES ($1,$2,$3) RETURNING *`,
+      [reviewId, username, body]
+    )
+    .then((newComment) => {
+      return newComment.rows[0];
+    });
+};
+
 module.exports = {
   displayCategories,
   displayReviewId,
   displayReviews,
   displayCommentByReviewId,
+  insertComment,
 };

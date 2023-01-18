@@ -156,4 +156,26 @@ describe("app ", () => {
         });
     });
   });
+  describe("POST /api/reviews/:review_id/comments ", () => {
+    test("respond with 201 when a valid comment is posted", () => {
+      return request(app)
+        .post("/api/reviews/2/comments")
+        .send({ username: "philippaclaire9", body: "test comment" })
+        .expect(201);
+    });
+    test("return status 201, responds with an array of comments for the given review_id ", () => {
+      return request(app)
+        .post("/api/reviews/2/comments")
+        .send({ username: "philippaclaire9", body: "test comment" })
+        .expect(201)
+        .then((comment) => {
+          expect(comment.body).toHaveProperty("comment_id", expect.any(Number));
+          expect(comment.body).toHaveProperty("body", expect.any(String));
+          expect(comment.body).toHaveProperty("review_id", expect.any(Number));
+          expect(comment.body).toHaveProperty("author", expect.any(String));
+          expect(comment.body).toHaveProperty("votes", expect.any(Number));
+          expect(comment.body).toHaveProperty("created_at", expect.any(String));
+        });
+    });
+  });
 });
