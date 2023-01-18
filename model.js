@@ -34,9 +34,27 @@ const displayCommentByReviewId = (reviewId) => {
   );
 };
 
+const insertComment = (reviewId, { username, body }) => {
+  return db
+    .query(`SELECT * FROM reviews WHERE review_id = $1`, [reviewId])
+    .then((review) => {
+      if (!review.rows[0]) {
+        return Promise.reject({ status: 404, msg: "reviewId not found" });
+      }
+      return db.query(
+        `INSERT INTO comments (review_id,author,body) VALUES ($1,$2,$3) RETURNING *`,
+        [reviewId, username, body]
+      );
+    })
+    .then((newComment) => {
+      return newComment.rows[0];
+    });
+};
+
 module.exports = {
   displayCategories,
   displayReviewId,
   displayReviews,
   displayCommentByReviewId,
+  insertComment,
 };

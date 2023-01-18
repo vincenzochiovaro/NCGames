@@ -156,4 +156,38 @@ describe("app ", () => {
         });
     });
   });
+  describe("POST /api/reviews/:review_id/comments ", () => {
+    test("respond with 201 when a valid comment is posted", () => {
+      return request(app)
+        .post("/api/reviews/2/comments")
+        .send({ username: "philippaclaire9", body: "test comment" })
+        .expect(201);
+    });
+    test("return status 201, responds with an object for the given review_id ", () => {
+      return request(app)
+        .post("/api/reviews/2/comments")
+        .send({ username: "philippaclaire9", body: "test comment" })
+        .expect(201)
+        .then((comment) => {
+          expect(comment.body).toHaveProperty("comment_id", expect.any(Number));
+          expect(comment.body).toHaveProperty("body", expect.any(String));
+          expect(comment.body).toHaveProperty("review_id", expect.any(Number));
+          expect(comment.body).toHaveProperty("author", expect.any(String));
+          expect(comment.body).toHaveProperty("votes", expect.any(Number));
+          expect(comment.body).toHaveProperty("created_at", expect.any(String));
+        });
+    });
+    test(`return status 404 when given review_id doesn't exist`, () => {
+      return request(app)
+        .post("/api/reviews/9999/comments")
+        .send({ username: "philippaclaire9", body: "test comment" })
+        .expect(404);
+    });
+    test("return status 400 when given review_id is invalid", () => {
+      return request(app)
+        .post("/api/reviews/invalid_reviewId/comments")
+        .send({ username: "philippaclaire9", body: "test comment" })
+        .expect(400);
+    });
+  });
 });
