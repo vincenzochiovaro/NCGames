@@ -163,7 +163,7 @@ describe("app ", () => {
         .send({ username: "philippaclaire9", body: "test comment" })
         .expect(201);
     });
-    test("return status 201, responds with an array of comments for the given review_id ", () => {
+    test("return status 201, responds with an object for the given review_id ", () => {
       return request(app)
         .post("/api/reviews/2/comments")
         .send({ username: "philippaclaire9", body: "test comment" })
@@ -176,6 +176,18 @@ describe("app ", () => {
           expect(comment.body).toHaveProperty("votes", expect.any(Number));
           expect(comment.body).toHaveProperty("created_at", expect.any(String));
         });
+    });
+    test(`return status 404 when given review_id doesn't exist`, () => {
+      return request(app)
+        .post("/api/reviews/9999/comments")
+        .send({ username: "philippaclaire9", body: "test comment" })
+        .expect(404);
+    });
+    test("return status 400 when given review_id is invalid", () => {
+      return request(app)
+        .post("/api/reviews/invalid_reviewId/comments")
+        .send({ username: "philippaclaire9", body: "test comment" })
+        .expect(400);
     });
   });
 });

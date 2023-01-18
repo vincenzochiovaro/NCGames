@@ -35,13 +35,15 @@ const getCommentByReviewId = (request, response) => {
   });
 };
 
-const postComment = (request, response) => {
+const postComment = (request, response, next) => {
   const { review_id } = request.params;
   const { username, body } = request.body;
 
-  insertComment(review_id, { username, body }).then((commentToSend) => {
-    response.status(201).send(commentToSend);
-  });
+  insertComment(review_id, { username, body })
+    .then((commentToSend) => {
+      response.status(201).send(commentToSend);
+    })
+    .catch(next);
 };
 
 module.exports = {
