@@ -112,4 +112,48 @@ describe("app ", () => {
         });
     });
   });
+  describe("/api/reviews/:review_id/comments", () => {
+    test("respond with a status of 200, and display an array of comments for the given review_id", () => {
+      return request(app)
+        .get("/api/reviews/2/comments")
+        .expect(200)
+        .then((commentsByReviewId) => {
+          expect(Array.isArray(commentsByReviewId.body)).toBe(true);
+          expect(commentsByReviewId.body).toHaveLength(3);
+        });
+    });
+    test("each comment must have comment_id,votes,created_at,author,body and review_id properties", () => {
+      return request(app)
+        .get("/api/reviews/2/comments")
+        .expect(200)
+        .then((commentsByReviewId) => {
+          commentsByReviewId.body.forEach((comment) => {
+            expect(comment).toHaveProperty("comment_id");
+            expect(comment).toHaveProperty("votes");
+            expect(comment).toHaveProperty("created_at");
+            expect(comment).toHaveProperty("author");
+            expect(comment).toHaveProperty("body");
+            expect(comment).toHaveProperty("review_id");
+          });
+        });
+    });
+    test("comments are displayed with the most recent comment first ", () => {
+      return request(app)
+        .get("/api/reviews/2/comments")
+        .expect(200)
+        .then((commentsByReviewId) => {
+          //prettier-ignore
+          expect(commentsByReviewId.body).toBeSortedBy("created_at", { descending: true,});
+        });
+    });
+    test(`return empty [] if given review_id doesn't match with any comments`, () => {
+      return request(app)
+        .get("/api/reviews/1/comments")
+        .expect(200)
+        .then((commentsByReviewId) => {
+          expect(Array.isArray(commentsByReviewId.body)).toBe(true);
+          expect(commentsByReviewId.body).toHaveLength(0);
+        });
+    });
+  });
 });
