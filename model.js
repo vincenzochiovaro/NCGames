@@ -23,4 +23,20 @@ const displayReviewId = (reviewId) => {
   );
 };
 
-module.exports = { displayCategories, displayReviewId, displayReviews };
+const displayCommentByReviewId = (reviewId) => {
+  return db.query(
+    `SELECT comment_id,votes,created_at,author,body,review_id 
+     FROM comments 
+     WHERE review_id = $1
+     ORDER BY comments.created_at::date DESC
+     `,
+    [reviewId]
+  );
+};
+
+module.exports = {
+  displayCategories,
+  displayReviewId,
+  displayReviews,
+  displayCommentByReviewId,
+};
