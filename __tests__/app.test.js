@@ -128,7 +128,6 @@ describe("app ", () => {
         .expect(200)
         .then((review) => {
           review.body.forEach((review) => {
-            console.log(review);
             expect(review).toHaveProperty("review_id", expect.any(Number));
             expect(review).toHaveProperty("title", expect.any(String));
             expect(review).toHaveProperty("category", expect.any(String));
