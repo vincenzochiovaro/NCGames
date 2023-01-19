@@ -75,6 +75,35 @@ describe("app ", () => {
           });
         });
     });
+    describe("queries", () => {
+      test('respond with a status of 200, and display an array of review object filtered by category "dexterity"', () => {
+        return request(app)
+          .get("/api/reviews?category=dexterity")
+          .expect(200)
+          .then((response) => {
+            expect(Array.isArray(response.body)).toBe(true);
+            expect(response.body[0]).toHaveProperty("category", "dexterity");
+          });
+      });
+      test("return with a status of 200 and display an array of review object filtered by votes in descending order which is the default behaviour", () => {
+        return request(app)
+          .get("/api/reviews?sort_by=votes")
+          .expect(200)
+          .then((response) => {
+            expect(Array.isArray(response.body)).toBe(true);
+            expect(response.body).toBeSortedBy("votes", { descending: true });
+          });
+      });
+      test("return with a status of 200 and display an array of review object filtered by votes in ascending order", () => {
+        return request(app)
+          .get("/api/reviews?sort_by=votes&order=ASC")
+          .expect(200)
+          .then((response) => {
+            expect(Array.isArray(response.body)).toBe(true);
+            expect(response.body).toBeSortedBy("votes", { ascending: true });
+          });
+      });
+    });
   });
   describe("GET/api/reviews/:review_id", () => {
     test("respond with a status of 200 and display a review object that match with ID endpoint", () => {

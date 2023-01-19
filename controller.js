@@ -1,3 +1,4 @@
+const { sort } = require("./db/data/test-data/categories");
 const {
   displayCategories,
   displayReviews,
@@ -16,9 +17,10 @@ const getCategories = (request, response) => {
 };
 
 const getReviews = (request, response) => {
-  displayReviews().then((reviews) => {
-    const reviewData = reviews.rows;
-    response.status(200).send(reviewData);
+  const { category, sort_by, order } = request.query;
+
+  displayReviews(category, sort_by, order).then((reviewToSend) => {
+    response.status(200).send(reviewToSend);
   });
 };
 
