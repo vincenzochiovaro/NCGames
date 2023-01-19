@@ -4,15 +4,39 @@ const displayCategories = () => {
   return db.query(`SELECT * FROM categories;`);
 };
 
-const displayReviews = () => {
-  return db.query(`
+const displayReviews = (category, sort_by, order) => {
+  let queryStr = `
   SELECT reviews.owner,reviews.title,reviews.review_id,reviews.category,reviews.review_img_url, reviews.created_at,reviews.votes,reviews.designer,
   COUNT(comments.review_id) AS comment_count
   FROM reviews
   LEFT JOIN comments ON reviews.review_id = comments.review_id
-  GROUP BY reviews.review_id
-  ORDER BY reviews.created_at::date DESC
-  `);
+  `;
+
+  //Params to pass to avoid any SQL injection
+  let queryParams = [];
+
+  if (category) {
+    queryStr += `WHERE reviews.category = $1 `;
+    queryParams.push(category);
+  }
+
+  queryStr += `GROUP BY reviews.review_id `;
+
+  if (sort_by) {
+    queryStr += `ORDER BY reviews.${sort_by} `;
+  } else {
+    queryStr += `ORDER BY reviews.created_at::date `;
+  }
+
+  if (order) {
+    queryStr += `${order} `;
+  } else {
+    queryStr += `DESC `;
+  }
+
+  return db.query(queryStr, queryParams).then((reviewToSend) => {
+    return reviewToSend.rows;
+  });
 };
 
 const displayReviewId = (reviewId) => {
