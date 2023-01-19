@@ -122,21 +122,23 @@ describe("app ", () => {
           expect(review.body[0].review_img_url).toBe(testData.reviewData[0].review_img_url);
         });
     });
-    test("a review object must have, review_id,title,review_body,designer,review_img_url,votes,category,owner,created_at - property", () => {
+    test("a review object must have, review_id,title,review_body,designer,review_img_url,votes,category,owner,created_at,comment_count - property", () => {
       return request(app)
         .get("/api/reviews/1")
         .expect(200)
         .then((review) => {
           review.body.forEach((review) => {
-            expect(review).toHaveProperty("review_id");
-            expect(review).toHaveProperty("title");
-            expect(review).toHaveProperty("category");
-            expect(review).toHaveProperty("designer");
-            expect(review).toHaveProperty("owner");
-            expect(review).toHaveProperty("review_body");
-            expect(review).toHaveProperty("review_img_url");
-            expect(review).toHaveProperty("created_at");
-            expect(review).toHaveProperty("votes");
+            console.log(review);
+            expect(review).toHaveProperty("review_id", expect.any(Number));
+            expect(review).toHaveProperty("title", expect.any(String));
+            expect(review).toHaveProperty("category", expect.any(String));
+            expect(review).toHaveProperty("designer", expect.any(String));
+            expect(review).toHaveProperty("owner", expect.any(String));
+            expect(review).toHaveProperty("review_body", expect.any(String));
+            expect(review).toHaveProperty("review_img_url", expect.any(String));
+            expect(review).toHaveProperty("created_at", expect.any(String));
+            expect(review).toHaveProperty("votes", expect.any(Number));
+            expect(review).toHaveProperty("comment_count", expect.any(String));
           });
         });
     });
