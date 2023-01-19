@@ -4,6 +4,7 @@ const {
   displayReviewId,
   displayCommentByReviewId,
   insertComment,
+  updateReview,
 } = require("./model");
 
 const getCategories = (request, response) => {
@@ -46,10 +47,21 @@ const postComment = (request, response, next) => {
     .catch(next);
 };
 
+const patchReviewById = (request, response, next) => {
+  const { review_id } = request.params;
+  const { inc_votes } = request.body;
+  updateReview(inc_votes, review_id)
+    .then((updatedReview) => {
+      response.status(200).send(updatedReview);
+    })
+    .catch(next);
+};
+
 module.exports = {
   getCategories,
   getReviewsById,
   getReviews,
   getCommentByReviewId,
   postComment,
+  patchReviewById,
 };
