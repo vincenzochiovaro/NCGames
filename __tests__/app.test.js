@@ -12,7 +12,7 @@ afterAll(() => {
 });
 
 describe("app ", () => {
-  describe("/api/categories", () => {
+  describe("GET/api/categories", () => {
     test("respond with a status of 200", () => {
       return request(app).get("/api/categories").expect(200);
     });
@@ -37,7 +37,7 @@ describe("app ", () => {
         });
     });
   });
-  describe("/api/reviews", () => {
+  describe("GET/api/reviews", () => {
     test("respond with a status of 200 and display an array of review objects sorted by date in descending order ", () => {
       return request(app)
         .get("/api/reviews")
@@ -76,7 +76,7 @@ describe("app ", () => {
         });
     });
   });
-  describe("/api/reviews/:review_id", () => {
+  describe("GET/api/reviews/:review_id", () => {
     test("respond with a status of 200 and display a review object that match with ID endpoint", () => {
       return request(app)
         .get("/api/reviews/1")
@@ -112,7 +112,7 @@ describe("app ", () => {
         });
     });
   });
-  describe("/api/reviews/:review_id/comments", () => {
+  describe("GET/api/reviews/:review_id/comments", () => {
     test("respond with a status of 200, and display an array of comments for the given review_id", () => {
       return request(app)
         .get("/api/reviews/2/comments")
@@ -153,6 +153,29 @@ describe("app ", () => {
         .then((commentsByReviewId) => {
           expect(Array.isArray(commentsByReviewId.body)).toBe(true);
           expect(commentsByReviewId.body).toHaveLength(0);
+        });
+    });
+  });
+  describe("GET/api/users", () => {
+    test("respond with a status of 200 and display an array of user objects with a length of 4 ", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then((users) => {
+          expect(Array.isArray(users.body)).toBe(true);
+          expect(users.body).toHaveLength(4);
+        });
+    });
+    test("each user must contain username,name,avatar_url  properties ", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then((users) => {
+          users.body.forEach((user) => {
+            expect(user).toHaveProperty("username", expect.any(String));
+            expect(user).toHaveProperty("name", expect.any(String));
+            expect(user).toHaveProperty("avatar_url", expect.any(String));
+          });
         });
     });
   });

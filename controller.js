@@ -5,6 +5,7 @@ const {
   displayCommentByReviewId,
   insertComment,
   updateReview,
+  displayUsers,
 } = require("./model");
 
 const getCategories = (request, response) => {
@@ -36,6 +37,12 @@ const getCommentByReviewId = (request, response) => {
   });
 };
 
+const getUsers = (request, response) => {
+  displayUsers().then((usersArrayToSend) => {
+    response.status(200).send(usersArrayToSend);
+  });
+};
+
 const postComment = (request, response, next) => {
   const { review_id } = request.params;
   const { username, body } = request.body;
@@ -64,4 +71,5 @@ module.exports = {
   getCommentByReviewId,
   postComment,
   patchReviewById,
+  getUsers,
 };

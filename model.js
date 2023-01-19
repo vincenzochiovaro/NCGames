@@ -34,6 +34,12 @@ const displayCommentByReviewId = (reviewId) => {
   );
 };
 
+const displayUsers = () => {
+  return db.query(` SELECT * FROM users `).then((usersArrayToSend) => {
+    return usersArrayToSend.rows;
+  });
+};
+
 const insertComment = (reviewId, { username, body }) => {
   return db
     .query(`SELECT * FROM reviews WHERE review_id = $1`, [reviewId])
@@ -73,4 +79,5 @@ module.exports = {
   displayCommentByReviewId,
   insertComment,
   updateReview,
+  displayUsers,
 };
