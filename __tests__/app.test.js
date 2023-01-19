@@ -85,6 +85,15 @@ describe("app ", () => {
             expect(response.body[0]).toHaveProperty("category", "dexterity");
           });
       });
+      test('return status of 200 and display a review object filtered by category and by votes in ascending order, "', () => {
+        return request(app)
+          .get("/api/reviews?category=social deduction&sort_by=votes&order=ASC")
+          .expect(200)
+          .then((response) => {
+            expect(Array.isArray(response.body)).toBe(true);
+            expect(response.body).toBeSortedBy("votes", { ascending: true });
+          });
+      });
       test("return with a status of 200 and display an array of review object filtered by votes in descending order which is the default behaviour", () => {
         return request(app)
           .get("/api/reviews?sort_by=votes")
