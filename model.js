@@ -51,10 +51,26 @@ const insertComment = (reviewId, { username, body }) => {
     });
 };
 
+const updateReview = (vote, reviewId) => {
+  return db
+    .query(
+      `UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *`,
+      [vote, reviewId]
+    )
+    .then((updatedReview) => {
+      if (!updatedReview.rows[0]) {
+        return Promise.reject({ status: 404, msg: "reviewId not found" });
+      } else {
+        return updatedReview.rows[0];
+      }
+    });
+};
+
 module.exports = {
   displayCategories,
   displayReviewId,
   displayReviews,
   displayCommentByReviewId,
   insertComment,
+  updateReview,
 };

@@ -190,4 +190,42 @@ describe("app ", () => {
         .expect(400);
     });
   });
+  describe("PATCH /api/reviews/:review_id", () => {
+    test("increment votes by 1 responds with the update review ", () => {
+      return request(app)
+        .patch("/api/reviews/1")
+        .send({ inc_votes: 1 })
+        .expect(200)
+        .then((updatedReview) => {
+          const reviewData1 = testData.reviewData[0].votes;
+          expect(reviewData1).not.toBe(updatedReview.body.votes);
+          expect(updatedReview.body.votes).toBeGreaterThan(reviewData1);
+          expect(updatedReview.body.votes).toBe(2);
+        });
+    });
+    test("decrement votes by 1 responds with the update review ", () => {
+      return request(app)
+        .patch("/api/reviews/1")
+        .send({ inc_votes: -1 })
+        .expect(200)
+        .then((updatedReview) => {
+          const reviewData1 = testData.reviewData[0].votes;
+          expect(reviewData1).not.toBe(updatedReview.body.votes);
+          expect(updatedReview.body.votes).toBeLessThan(reviewData1);
+          expect(updatedReview.body.votes).toBe(0);
+        });
+    });
+    test("return status 404 when given review_id doesn't exist", () => {
+      return request(app)
+        .patch("/api/reviews/9999")
+        .send({ inc_votes: 1 })
+        .expect(404);
+    });
+    test("return status 400 when given  review_id is invalid", () => {
+      return request(app)
+        .patch("/api/reviews/invalidId")
+        .send({ inc_votes: 1 })
+        .expect(400);
+    });
+  });
 });
