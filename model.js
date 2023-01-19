@@ -35,7 +35,11 @@ const displayReviews = (category, sort_by, order) => {
   }
 
   return db.query(queryStr, queryParams).then((reviewToSend) => {
-    return reviewToSend.rows;
+    if (!reviewToSend.rows.length) {
+      return Promise.reject({ status: 400, msg: "invalid query" });
+    } else {
+      return reviewToSend.rows;
+    }
   });
 };
 

@@ -103,6 +103,15 @@ describe("app ", () => {
             expect(response.body).toBeSortedBy("votes", { ascending: true });
           });
       });
+      test("return status 400 respond with a message invalid query", () => {
+        return request(app)
+          .get("/api/reviews?category=invalidQuery")
+          .expect(400)
+          .then((response) => {
+            expect(response.status).toBe(400);
+            expect(response.body.msg).toBe("invalid query");
+          });
+      });
     });
   });
   describe("GET/api/reviews/:review_id", () => {

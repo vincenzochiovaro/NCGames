@@ -16,12 +16,16 @@ const getCategories = (request, response) => {
   });
 };
 
-const getReviews = (request, response) => {
+const getReviews = (request, response, next) => {
   const { category, sort_by, order } = request.query;
 
-  displayReviews(category, sort_by, order).then((reviewToSend) => {
-    response.status(200).send(reviewToSend);
-  });
+  displayReviews(category, sort_by, order)
+    .then((reviewToSend) => {
+      response.status(200).send(reviewToSend);
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 const getReviewsById = (request, response) => {
