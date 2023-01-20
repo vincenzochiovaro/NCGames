@@ -6,6 +6,7 @@ const {
   postComment,
   patchReviewById,
   getUsers,
+  deleteCommentById,
 } = require("./controller");
 
 const express = require("express");
@@ -19,6 +20,7 @@ app.get("/api/reviews/:review_id/comments", getCommentByReviewId);
 app.get("/api/users", getUsers);
 app.post("/api/reviews/:review_id/comments", postComment);
 app.patch("/api/reviews/:review_id", patchReviewById);
+app.delete("/api/comments/:comment_id", deleteCommentById);
 
 //CUSTOM ERROR HANDLER
 app.use((err, request, response, next) => {

@@ -299,4 +299,20 @@ describe("app ", () => {
         .expect(400);
     });
   });
+  describe("DELETE /api/comments/:comment_id", () => {
+    test("return status 204, delete the given comment by comment_id and respond with no content", () => {
+      return request(app)
+        .delete("/api/comments/1")
+        .expect(204)
+        .then((deletedComment) => {
+          expect(deletedComment.body).toEqual({});
+        });
+    });
+    test(`return status 404 when comment_id provided doesn't exixst`, () => {
+      return request(app).delete("/api/comments/999").expect(404);
+    });
+    test("return status 400 when comment_id provided is invalid", () => {
+      return request(app).delete("/api/comments/invalidId").expect(400);
+    });
+  });
 });
