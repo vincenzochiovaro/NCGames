@@ -3,6 +3,7 @@ const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data");
 const { app } = require("../app");
+const endpointsData = require("../db/data/test-data/endpoints");
 
 beforeEach(() => {
   return seed(testData);
@@ -12,6 +13,16 @@ afterAll(() => {
 });
 
 describe("app ", () => {
+  describe("GET/api", () => {
+    test("GET /api should return all available endpoints on the API", () => {
+      return request(app)
+        .get("/api")
+        .expect(200)
+        .then((endPoints) => {
+          expect(endPoints.body).toEqual(endpointsData);
+        });
+    });
+  });
   describe("GET/api/categories", () => {
     test("respond with a status of 200", () => {
       return request(app).get("/api/categories").expect(200);
@@ -297,6 +308,22 @@ describe("app ", () => {
         .patch("/api/reviews/invalidId")
         .send({ inc_votes: 1 })
         .expect(400);
+    });
+  });
+  describe("DELETE /api/comments/:comment_id", () => {
+    test("return status 204, delete the given comment by comment_id and respond with no content", () => {
+      return request(app)
+        .delete("/api/comments/1")
+        .expect(204)
+        .then((deletedComment) => {
+          expect(deletedComment.body).toEqual({});
+        });
+    });
+    test(`return status 404 when comment_id provided doesn't exixst`, () => {
+      return request(app).delete("/api/comments/999").expect(404);
+    });
+    test("return status 400 when comment_id provided is invalid", () => {
+      return request(app).delete("/api/comments/invalidId").expect(400);
     });
   });
 });

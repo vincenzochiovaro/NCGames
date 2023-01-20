@@ -1,4 +1,4 @@
-const { sort } = require("./db/data/test-data/categories");
+const endpointsData = require("./db/data/test-data/endpoints");
 const {
   displayCategories,
   displayReviews,
@@ -7,7 +7,12 @@ const {
   insertComment,
   updateReview,
   displayUsers,
+  deleteComment,
 } = require("./model");
+
+const getApiInfo = (request, response) => {
+  response.status(200).send(endpointsData);
+};
 
 const getCategories = (request, response) => {
   displayCategories().then((categoriesObject) => {
@@ -70,6 +75,17 @@ const patchReviewById = (request, response, next) => {
     .catch(next);
 };
 
+const deleteCommentById = (request, response, next) => {
+  const { comment_id } = request.params;
+  deleteComment(comment_id)
+    .then(() => {
+      response.status(204).send();
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
 module.exports = {
   getCategories,
   getReviewsById,
@@ -78,4 +94,6 @@ module.exports = {
   postComment,
   patchReviewById,
   getUsers,
+  deleteCommentById,
+  getApiInfo,
 };
