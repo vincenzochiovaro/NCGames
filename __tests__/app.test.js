@@ -319,7 +319,7 @@ describe("app ", () => {
           expect(deletedComment.body).toEqual({});
         });
     });
-    test(`return status 404 when comment_id provided doesn't exixst`, () => {
+    test(`return status 404 when comment_id provided doesn't exist`, () => {
       return request(app).delete("/api/comments/999").expect(404);
     });
     test("return status 400 when comment_id provided is invalid", () => {
