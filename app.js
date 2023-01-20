@@ -7,12 +7,14 @@ const {
   patchReviewById,
   getUsers,
   deleteCommentById,
+  getApiInfo,
 } = require("./controller");
 
 const express = require("express");
 const app = express();
 app.use(express.json());
 
+app.get("/api", getApiInfo);
 app.get("/api/categories", getCategories);
 app.get("/api/reviews", getReviews);
 app.get("/api/reviews/:review_id", getReviewsById);

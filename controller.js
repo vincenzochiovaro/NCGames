@@ -1,4 +1,4 @@
-const { sort } = require("./db/data/test-data/categories");
+const endpointsData = require("./db/data/test-data/endpoints");
 const {
   displayCategories,
   displayReviews,
@@ -9,6 +9,10 @@ const {
   displayUsers,
   deleteComment,
 } = require("./model");
+
+const getApiInfo = (request, response) => {
+  response.status(200).send(endpointsData);
+};
 
 const getCategories = (request, response) => {
   displayCategories().then((categoriesObject) => {
@@ -91,4 +95,5 @@ module.exports = {
   patchReviewById,
   getUsers,
   deleteCommentById,
+  getApiInfo,
 };
