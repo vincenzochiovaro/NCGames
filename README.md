@@ -8,7 +8,7 @@ https://vincenzos-back-end-project.onrender.com/api
 
 # Getting Started
 
-1. CLone the repository
+1. Clone the repository
 2. Install the dependecies by running 'npm install'
 3. Create two new files .env.development and .env.test
    and add PGDATABASE=nc_games for the development environment and
@@ -26,15 +26,15 @@ Postgres version 12.0.0 or higher
 
 # Endpoints
 
-GET /api
-GET /api/categories
-GET /api/reviews
-GET /api/reviews/:review_id
-GET /api/reviews/:review_id/comments
-GET /api/users
-POST /api/reviews/:review_id/comments
-PATCH /api/reviews/:review_id
-DELETE /api/comments/:comment_id
+- GET /api
+- GET /api/categories
+- GET /api/reviews
+- GET /api/reviews/:review_id
+- GET /api/reviews/:review_id/comments
+- GET /api/users
+- POST /api/reviews/:review_id/comments
+- PATCH /api/reviews/:review_id
+- DELETE /api/comments/:comment_id
 
 # Contributing
 
