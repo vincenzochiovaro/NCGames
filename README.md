@@ -1,6 +1,6 @@
 # API documentation
 
-This is a documentation for an API that allows users to view, create, update and delete reviews, comments and users. It also allows the user to view the available API endpoints.
+NC Games is a RESTful API that enables CRUD operations for reviews, comments, and users. The API provides various endpoints to view, create, update, and delete reviews and comments
 
 # Link to hosted version
 
